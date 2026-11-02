@@ -1,0 +1,1469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHOPPERS MENS WEAR — Barcode Label Printing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<style>
+:root {
+  --bg: #fcfcfb;
+  --card: #ffffff;
+  --ink: #111111;
+  --muted: #6b6b6b;
+  --line: #e2e2e0;
+  --input-line: #d4d4d2;
+  --black: #0a0a0a;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+
+/* Brand Header matching reference image */
+.brand-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+  padding: 20px 16px 18px;
+  text-align: center;
+}
+.brand-title {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  color: #111111;
+  margin: 0;
+  padding-left: 0.26em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.brand-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  color: #666666;
+  margin-top: 6px;
+  padding-left: 0.36em;
+  text-transform: uppercase;
+}
+
+/* Main container */
+.page-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 22px 16px 56px;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 24px 22px;
+  margin-bottom: 22px;
+}
+.section-heading {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #666666;
+  text-transform: uppercase;
+  margin: 0 0 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.queue-pill {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: #f3f3f1;
+  color: #333;
+  padding: 4px 9px;
+  border-radius: 3px;
+}
+.queue-pill.active {
+  background: #111;
+  color: #fff;
+}
+
+/* Top controls grid */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #707070;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.select-input, .text-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--input-line);
+  border-radius: 2px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.select-input:focus, .text-input:focus {
+  border-color: #111111;
+}
+
+/* Preview Block */
+.preview-caption {
+  font-size: 14px;
+  color: #666666;
+  margin: 4px 0 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preview-caption small {
+  font-size: 12px;
+  color: #888;
+}
+.label-preview-box {
+  width: 266px;
+  min-height: 133px;
+  border: 1.5px dashed #b5b5b5;
+  background: #ffffff;
+  padding: 8px 12px 9px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  user-select: none;
+  transition: width 0.2s, min-height 0.2s;
+}
+.label-preview-shop {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #111111;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1.2px solid #222222;
+  text-align: left;
+  line-height: 1.1;
+}
+.label-preview-product-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 3px;
+}
+.label-preview-product {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.label-preview-size {
+  font-size: 10px;
+  font-weight: 700;
+  color: #222222;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.label-preview-barcode-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3px 0 2px;
+  min-height: 50px;
+}
+.label-preview-barcode-wrap svg {
+  width: 92%;
+  height: 48px;
+  max-width: 236px;
+  display: block;
+}
+.label-preview-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1px;
+}
+.label-preview-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #222222;
+  letter-spacing: 0.04em;
+}
+.label-preview-price {
+  font-size: 17px;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+/* Buttons matching reference image */
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 332px;
+  max-width: 100%;
+  height: 46px;
+  background: var(--black);
+  color: #ffffff;
+  border: 1px solid var(--black);
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  transition: background 0.15s;
+}
+.btn-download:hover {
+  background: #262626;
+}
+.secondary-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn-outline {
+  height: 44px;
+  padding: 0 24px;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid var(--input-line);
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-outline:hover {
+  background: #f6f6f4;
+  border-color: #999;
+}
+.helper-copy {
+  font-size: 13.5px;
+  color: #666666;
+  line-height: 1.5;
+  margin: 16px 0 0 0;
+}
+
+/* Filter & Catalogue Card */
+.filter-box-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+.filter-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 38px 0 14px;
+  border: 1px solid var(--input-line);
+  border-radius: 2px;
+  font-size: 15px;
+  color: #111111;
+  background: #ffffff;
+  outline: none;
+}
+.filter-input::placeholder {
+  color: #9b9b9b;
+}
+.filter-input:focus {
+  border-color: #111111;
+}
+.clear-filter-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 16px;
+  padding: 4px 8px;
+  display: none;
+}
+.clear-filter-btn.visible {
+  display: block;
+}
+
+/* Category pills & toolbar */
+.catalogue-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.cat-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cat-pill {
+  background: #f5f5f3;
+  border: 1px solid #e4e4e1;
+  color: #555;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.12s;
+}
+.cat-pill:hover {
+  border-color: #bbb;
+  color: #111;
+}
+.cat-pill.active {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+.manage-tools {
+  display: flex;
+  gap: 6px;
+}
+.tool-btn {
+  background: #fff;
+  border: 1px solid #dcdcd9;
+  color: #333;
+  padding: 5px 9px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.tool-btn:hover {
+  background: #f5f5f3;
+}
+
+/* Collapsible Add/Manage Drawer */
+.drawer {
+  display: none;
+  background: #fafaf8;
+  border: 1px solid var(--line);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.drawer.open {
+  display: block;
+}
+.drawer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr 0.8fr;
+  gap: 10px;
+  align-items: end;
+}
+.drawer-grid input, .drawer-grid select {
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--input-line);
+  background: #fff;
+  font-size: 13px;
+}
+.drawer-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+/* Items Table matching reference image */
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.items-table th {
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #666666;
+  text-transform: uppercase;
+  padding: 10px 8px 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.items-table th.col-price {
+  width: 28%;
+}
+.items-table th.col-size {
+  width: 18%;
+}
+.items-table th.col-labels {
+  width: 110px;
+  text-align: left;
+}
+.items-table td {
+  padding: 14px 8px 14px 0;
+  border-bottom: 1px solid #ececea;
+  vertical-align: middle;
+}
+.item-row {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.item-row:hover {
+  background: #fafaf8;
+}
+.item-row.previewing td:first-child {
+  border-left: 3px solid #111;
+  padding-left: 8px;
+}
+.item-row.has-qty {
+  background: #f9f9f6;
+}
+.item-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111111;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+.item-code {
+  font-size: 13px;
+  color: #6e6e6e;
+  margin-top: 2px;
+  font-family: 'Inter', sans-serif;
+}
+.item-price {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111111;
+}
+.size-select-inline {
+  height: 36px;
+  padding: 0 6px;
+  border: 1px solid var(--input-line);
+  border-radius: 2px;
+  background: #fff;
+  font-size: 12px;
+  color: #333;
+  width: 72px;
+}
+.labels-input {
+  width: 96px;
+  height: 42px;
+  border: 1px solid var(--input-line);
+  border-radius: 2px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  padding: 0 8px;
+  outline: none;
+}
+.labels-input:focus {
+  border-color: #111111;
+  box-shadow: 0 0 0 2px rgba(17,17,17,0.08);
+}
+.empty-state {
+  text-align: center;
+  padding: 32px 12px;
+  color: #777;
+  font-size: 14px;
+}
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  font-size: 12px;
+  color: #777;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111111;
+  color: #ffffff;
+  padding: 11px 18px;
+  border-radius: 3px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  z-index: 1000;
+  display: none;
+}
+
+/* Print stylesheet for thermal roll & sheet printing */
+#printArea {
+  display: none;
+}
+@media (max-width: 560px) {
+  .controls-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .drawer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .btn-download {
+    width: 100%;
+  }
+  .secondary-actions {
+    width: 100%;
+  }
+  .secondary-actions .btn-outline {
+    flex: 1;
+  }
+  .labels-input {
+    width: 82px;
+  }
+}
+@media print {
+  @page {
+    size: 50mm 25mm;
+    margin: 0;
+  }
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .brand-header, .page-wrap, .toast {
+    display: none !important;
+  }
+  #printArea {
+    display: block !important;
+    width: 100%;
+  }
+  .print-label {
+    width: 50mm;
+    height: 25mm;
+    padding: 1.6mm 2.4mm;
+    box-sizing: border-box;
+    page-break-after: always;
+    break-after: page;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+    color: #000000;
+    font-family: 'Inter', Arial, sans-serif;
+    overflow: hidden;
+  }
+  .print-label:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  .print-label .pl-shop {
+    font-size: 5.8pt;
+    font-weight: 800;
+    letter-spacing: 0.9pt;
+    text-transform: uppercase;
+    border-bottom: 0.35mm solid #000;
+    padding-bottom: 0.5mm;
+    line-height: 1.05;
+    text-align: left;
+  }
+  .print-label .pl-prod-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.4mm;
+  }
+  .print-label .pl-prod {
+    font-size: 7.8pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .print-label .pl-size {
+    font-size: 6.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .print-label .pl-barcode {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.3mm 0;
+  }
+  .print-label .pl-barcode svg {
+    width: 92%;
+    height: 9.5mm;
+    display: block;
+  }
+  .print-label .pl-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+  }
+  .print-label .pl-code {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 7pt;
+    font-weight: 600;
+    letter-spacing: 0.3pt;
+  }
+  .print-label .pl-price {
+    font-size: 9.5pt;
+    font-weight: 800;
+    line-height: 1;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="brand-header">
+  <h1 class="brand-title">CHOPPERS</h1>
+  <div class="brand-subtitle">MENS WEAR</div>
+</header>
+
+<main class="page-wrap">
+  <!-- Top Card: Barcode Label Printing -->
+  <section class="card" aria-label="Barcode Label Printing">
+    <h2 class="section-heading">
+      <span>BARCODE LABEL PRINTING</span>
+      <span class="queue-pill" id="queueSummaryPill">175 SKUs Ready</span>
+    </h2>
+
+    <div class="controls-grid">
+      <div>
+        <label class="field-label" for="labelSize">LABEL SIZE</label>
+        <select class="select-input" id="labelSize">
+          <option value="50x25" selected>50 × 25 mm roll</option>
+          <option value="50x30">50 × 30 mm roll</option>
+          <option value="40x30">40 × 30 mm roll</option>
+          <option value="38x25">38 × 25 mm roll</option>
+          <option value="a4">A4 Sheet (40 labels)</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label" for="showSize">SHOW SIZE ON LABEL</label>
+        <select class="select-input" id="showSize">
+          <option value="yes" selected>Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="preview-caption">
+      <span id="previewCaptionText">Preview (first item with a quantity)</span>
+      <small id="previewActiveHint"></small>
+    </div>
+
+    <!-- Dashed Label Preview matching reference image -->
+    <div class="label-preview-box" id="labelPreviewBox">
+      <div class="label-preview-shop">CHOPPERS MENS WEAR</div>
+      <div class="label-preview-product-row">
+        <div class="label-preview-product" id="prevProduct">SHIRT</div>
+        <div class="label-preview-size" id="prevSize"></div>
+      </div>
+      <div class="label-preview-barcode-wrap" id="prevBarcodeWrap">
+        <svg id="previewBarcode" aria-label="Code 128 Barcode"></svg>
+      </div>
+      <div class="label-preview-bottom">
+        <span class="label-preview-code" id="prevCode">SH699</span>
+        <span class="label-preview-price" id="prevPrice">₹699</span>
+      </div>
+    </div>
+
+    <div>
+      <button type="button" class="btn-download" id="downloadPrintableBtn">DOWNLOAD PRINTABLE FILE</button>
+      <div class="secondary-actions">
+        <button type="button" class="btn-outline" id="printHereBtn">PRINT HERE</button>
+        <button type="button" class="btn-outline" id="clearBtn">CLEAR</button>
+      </div>
+    </div>
+
+    <p class="helper-copy">
+      Each label shows the product name, selling price and a Code 128 barcode of the SKU with the SKU printed below it. Scanning it at billing adds the item.
+    </p>
+  </section>
+
+  <!-- Bottom Card: Filter & Items List -->
+  <section class="card" aria-label="Product Catalogue">
+    <div class="filter-box-wrap">
+      <input
+        type="text"
+        class="filter-input"
+        id="filterInput"
+        placeholder="Filter items..."
+        autocomplete="off"
+        aria-label="Filter items by product name, code, or price"
+      >
+      <button type="button" class="clear-filter-btn" id="clearFilterBtn" title="Clear search">×</button>
+    </div>
+
+    <div class="catalogue-bar">
+      <div class="cat-pills" id="categoryPills"></div>
+      <div class="manage-tools">
+        <button type="button" class="tool-btn" id="toggleAddDrawerBtn">+ Add SKU</button>
+        <button type="button" class="tool-btn" id="exportCsvBtn">Export CSV</button>
+        <button type="button" class="tool-btn" id="importCsvBtn">Import CSV</button>
+        <input type="file" id="importCsvInput" accept=".csv,text/csv" hidden>
+      </div>
+    </div>
+
+    <!-- Collapsible Add SKU Drawer -->
+    <div class="drawer" id="addSkuDrawer">
+      <form id="addSkuForm">
+        <div class="drawer-grid">
+          <div>
+            <label class="field-label" for="newProdName">Product Name</label>
+            <input type="text" id="newProdName" placeholder="e.g. SHIRT" required maxlength="40">
+          </div>
+          <div>
+            <label class="field-label" for="newProdCode">Code (Barcode)</label>
+            <input type="text" id="newProdCode" placeholder="e.g. SH999" required maxlength="30">
+          </div>
+          <div>
+            <label class="field-label" for="newProdPrice">Sales Price (₹)</label>
+            <input type="number" id="newProdPrice" placeholder="999" min="0" step="1" required>
+          </div>
+          <div>
+            <label class="field-label" for="newProdQty">Labels</label>
+            <input type="number" id="newProdQty" value="1" min="0" max="500">
+          </div>
+        </div>
+        <div class="drawer-actions">
+          <button type="submit" class="btn-outline" style="background:#111;color:#fff;border-color:#111;height:36px;padding:0 16px;">Save Item</button>
+          <button type="button" class="btn-outline" id="resetStockBtn" style="height:36px;padding:0 14px;">Reset Default Sheet (175 items)</button>
+        </div>
+      </form>
+    </div>
+
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>ITEM</th>
+          <th class="col-price">PRICE</th>
+          <th class="col-size" id="sizeHeaderCol">SIZE</th>
+          <th class="col-labels">LABELS</th>
+        </tr>
+      </thead>
+      <tbody id="itemsTableBody"></tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState" style="display:none;">
+      No matching items found. Try another product name, code, or price.
+    </div>
+
+    <div class="table-footer">
+      <span id="showingSummary">Showing 175 of 175 items from stock sheet</span>
+      <span id="totalLabelsFooter">0 labels queued for printing</span>
+    </div>
+  </section>
+</main>
+
+<div id="printArea" aria-hidden="true"></div>
+<div class="toast" id="toastMsg" role="status" aria-live="polite"></div>
+
+<script>
+const DEFAULT_PRODUCTS = [{"id": "item_1", "sl": 1, "name": "PANT", "sku": "PA1950", "category": "PANT", "price": 1950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_2", "sl": 2, "name": "PANT", "sku": "PA1999", "category": "PANT", "price": 1999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_3", "sl": 3, "name": "JEANS", "sku": "JE799", "category": "JEANS", "price": 799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_4", "sl": 4, "name": "JEANS", "sku": "JE850", "category": "JEANS", "price": 850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_5", "sl": 5, "name": "JEANS", "sku": "JE899", "category": "JEANS", "price": 899, "stock": 1000, "size": "", "labels": 0}, {"id": "item_6", "sl": 6, "name": "JEANS", "sku": "JE950", "category": "JEANS", "price": 950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_7", "sl": 7, "name": "JEANS", "sku": "JE999", "category": "JEANS", "price": 999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_8", "sl": 8, "name": "JEANS", "sku": "JE1050", "category": "JEANS", "price": 1050, "stock": 1000, "size": "", "labels": 0}, {"id": "item_9", "sl": 9, "name": "JEANS", "sku": "JE1099", "category": "JEANS", "price": 1099, "stock": 1000, "size": "", "labels": 0}, {"id": "item_10", "sl": 10, "name": "JEANS", "sku": "JE1150", "category": "JEANS", "price": 1150, "stock": 1000, "size": "", "labels": 0}, {"id": "item_11", "sl": 11, "name": "JEANS", "sku": "JE1199", "category": "JEANS", "price": 1199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_12", "sl": 12, "name": "JEANS", "sku": "JE1250", "category": "JEANS", "price": 1250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_13", "sl": 13, "name": "JEANS", "sku": "JE1299", "category": "JEANS", "price": 1299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_14", "sl": 14, "name": "JEANS", "sku": "JE1350", "category": "JEANS", "price": 1350, "stock": 1000, "size": "", "labels": 0}, {"id": "item_15", "sl": 15, "name": "JEANS", "sku": "JE1399", "category": "JEANS", "price": 1399, "stock": 1000, "size": "", "labels": 0}, {"id": "item_16", "sl": 16, "name": "JEANS", "sku": "JE1450", "category": "JEANS", "price": 1450, "stock": 1000, "size": "", "labels": 0}, {"id": "item_17", "sl": 17, "name": "JEANS", "sku": "JE1499", "category": "JEANS", "price": 1499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_18", "sl": 18, "name": "JEANS", "sku": "JE1550", "category": "JEANS", "price": 1550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_19", "sl": 19, "name": "JEANS", "sku": "JE1599", "category": "JEANS", "price": 1599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_20", "sl": 20, "name": "JEANS", "sku": "JE1650", "category": "JEANS", "price": 1650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_21", "sl": 21, "name": "JEANS", "sku": "JE1699", "category": "JEANS", "price": 1699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_22", "sl": 22, "name": "JEANS", "sku": "JE1750", "category": "JEANS", "price": 1750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_23", "sl": 23, "name": "JEANS", "sku": "JE1799", "category": "JEANS", "price": 1799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_24", "sl": 24, "name": "JEANS", "sku": "JE1850", "category": "JEANS", "price": 1850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_25", "sl": 25, "name": "JEANS", "sku": "JE1899", "category": "JEANS", "price": 1899, "stock": 1000, "size": "", "labels": 0}, {"id": "item_26", "sl": 26, "name": "JEANS", "sku": "JE1950", "category": "JEANS", "price": 1950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_27", "sl": 27, "name": "JEANS", "sku": "JE1999", "category": "JEANS", "price": 1999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_28", "sl": 28, "name": "SHORTS", "sku": "SS199", "category": "SHORTS", "price": 199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_29", "sl": 29, "name": "SHORTS", "sku": "SS250", "category": "SHORTS", "price": 250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_30", "sl": 30, "name": "SHORTS", "sku": "SS299", "category": "SHORTS", "price": 299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_31", "sl": 31, "name": "SHORTS", "sku": "SS350", "category": "SHORTS", "price": 350, "stock": 1000, "size": "", "labels": 0}, {"id": "item_32", "sl": 32, "name": "SHORTS", "sku": "SS399", "category": "SHORTS", "price": 399, "stock": 1000, "size": "", "labels": 0}, {"id": "item_33", "sl": 33, "name": "SHORTS", "sku": "SS450", "category": "SHORTS", "price": 450, "stock": 1000, "size": "", "labels": 0}, {"id": "item_34", "sl": 34, "name": "SHORTS", "sku": "SS499", "category": "SHORTS", "price": 499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_35", "sl": 35, "name": "SHORTS", "sku": "SS550", "category": "SHORTS", "price": 550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_36", "sl": 36, "name": "SHORTS", "sku": "SS599", "category": "SHORTS", "price": 599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_37", "sl": 37, "name": "SHORTS", "sku": "SS650", "category": "SHORTS", "price": 650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_38", "sl": 38, "name": "SHORTS", "sku": "SS699", "category": "SHORTS", "price": 699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_39", "sl": 39, "name": "SHORTS", "sku": "SS750", "category": "SHORTS", "price": 750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_40", "sl": 40, "name": "SHORTS", "sku": "SS799", "category": "SHORTS", "price": 799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_41", "sl": 41, "name": "SHORTS", "sku": "SS850", "category": "SHORTS", "price": 850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_42", "sl": 42, "name": "SHORTS", "sku": "SS899", "category": "SHORTS", "price": 899, "stock": 1000, "size": "", "labels": 0}, {"id": "item_43", "sl": 43, "name": "SHORTS", "sku": "SS950", "category": "SHORTS", "price": 950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_44", "sl": 44, "name": "SHORTS", "sku": "SS999", "category": "SHORTS", "price": 999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_45", "sl": 45, "name": "SHORTS", "sku": "SS1050", "category": "SHORTS", "price": 1050, "stock": 1000, "size": "", "labels": 0}, {"id": "item_46", "sl": 46, "name": "SHORTS", "sku": "SS1099", "category": "SHORTS", "price": 1099, "stock": 1000, "size": "", "labels": 0}, {"id": "item_47", "sl": 47, "name": "SHORTS", "sku": "SS1150", "category": "SHORTS", "price": 1150, "stock": 1000, "size": "", "labels": 0}, {"id": "item_48", "sl": 48, "name": "SHORTS", "sku": "SS1199", "category": "SHORTS", "price": 1199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_49", "sl": 49, "name": "SHORTS", "sku": "SS1250", "category": "SHORTS", "price": 1250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_50", "sl": 50, "name": "SHORTS", "sku": "SS1299", "category": "SHORTS", "price": 1299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_51", "sl": 51, "name": "TSHIRT", "sku": "TS199", "category": "TSHIRT", "price": 199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_52", "sl": 52, "name": "TSHIRT", "sku": "TS250", "category": "TSHIRT", "price": 250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_53", "sl": 53, "name": "TSHIRT", "sku": "TS299", "category": "TSHIRT", "price": 299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_54", "sl": 54, "name": "TSHIRT", "sku": "TS350", "category": "TSHIRT", "price": 350, "stock": 1000, "size": "", "labels": 0}, {"id": "item_55", "sl": 55, "name": "TSHIRT", "sku": "TS399", "category": "TSHIRT", "price": 399, "stock": 1000, "size": "", "labels": 0}, {"id": "item_56", "sl": 56, "name": "TSHIRT", "sku": "TS450", "category": "TSHIRT", "price": 450, "stock": 1000, "size": "", "labels": 0}, {"id": "item_57", "sl": 57, "name": "TSHIRT", "sku": "TS499", "category": "TSHIRT", "price": 499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_58", "sl": 58, "name": "TSHIRT", "sku": "TS550", "category": "TSHIRT", "price": 550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_59", "sl": 59, "name": "TSHIRT", "sku": "TS599", "category": "TSHIRT", "price": 599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_60", "sl": 60, "name": "TSHIRT", "sku": "TS650", "category": "TSHIRT", "price": 650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_61", "sl": 61, "name": "TSHIRT", "sku": "TS699", "category": "TSHIRT", "price": 699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_62", "sl": 62, "name": "TSHIRT", "sku": "TS750", "category": "TSHIRT", "price": 750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_63", "sl": 63, "name": "TSHIRT", "sku": "TS799", "category": "TSHIRT", "price": 799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_64", "sl": 64, "name": "TSHIRT", "sku": "TS850", "category": "TSHIRT", "price": 850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_65", "sl": 65, "name": "TSHIRT", "sku": "TS899", "category": "TSHIRT", "price": 899, "stock": 1000, "size": "", "labels": 0}, {"id": "item_66", "sl": 66, "name": "TSHIRT", "sku": "TS950", "category": "TSHIRT", "price": 950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_67", "sl": 67, "name": "TSHIRT", "sku": "TS999", "category": "TSHIRT", "price": 999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_68", "sl": 68, "name": "TSHIRT", "sku": "TS1050", "category": "TSHIRT", "price": 1050, "stock": 1000, "size": "", "labels": 0}, {"id": "item_69", "sl": 69, "name": "TSHIRT", "sku": "TS1099", "category": "TSHIRT", "price": 1099, "stock": 1000, "size": "", "labels": 0}, {"id": "item_70", "sl": 70, "name": "TSHIRT", "sku": "TS1150", "category": "TSHIRT", "price": 1150, "stock": 1000, "size": "", "labels": 0}, {"id": "item_71", "sl": 71, "name": "TSHIRT", "sku": "TS1199", "category": "TSHIRT", "price": 1199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_72", "sl": 72, "name": "TSHIRT", "sku": "TS1250", "category": "TSHIRT", "price": 1250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_73", "sl": 73, "name": "TSHIRT", "sku": "TS1299", "category": "TSHIRT", "price": 1299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_74", "sl": 74, "name": "UG", "sku": "UG199", "category": "UG", "price": 199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_75", "sl": 75, "name": "TSHIRT", "sku": "UG250", "category": "TSHIRT", "price": 250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_76", "sl": 76, "name": "TSHIRT", "sku": "UG299", "category": "TSHIRT", "price": 299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_77", "sl": 77, "name": "TSHIRT", "sku": "UG350", "category": "TSHIRT", "price": 350, "stock": 1000, "size": "", "labels": 0}, {"id": "item_78", "sl": 78, "name": "TSHIRT", "sku": "UG399", "category": "TSHIRT", "price": 399, "stock": 1000, "size": "", "labels": 0}, {"id": "item_79", "sl": 79, "name": "TSHIRT", "sku": "UG450", "category": "TSHIRT", "price": 450, "stock": 1000, "size": "", "labels": 0}, {"id": "item_80", "sl": 80, "name": "TSHIRT", "sku": "UG499", "category": "TSHIRT", "price": 499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_81", "sl": 81, "name": "TSHIRT", "sku": "UG550", "category": "TSHIRT", "price": 550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_82", "sl": 82, "name": "TSHIRT", "sku": "UG599", "category": "TSHIRT", "price": 599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_83", "sl": 83, "name": "TSHIRT", "sku": "UG650", "category": "TSHIRT", "price": 650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_84", "sl": 84, "name": "TSHIRT", "sku": "UG699", "category": "TSHIRT", "price": 699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_85", "sl": 85, "name": "TSHIRT", "sku": "UG750", "category": "TSHIRT", "price": 750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_86", "sl": 86, "name": "TSHIRT", "sku": "UG799", "category": "TSHIRT", "price": 799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_87", "sl": 87, "name": "SOCKS", "sku": "SO60", "category": "SOCKS", "price": 60, "stock": 1000, "size": "", "labels": 0}, {"id": "item_88", "sl": 88, "name": "SOCKS", "sku": "SO65", "category": "SOCKS", "price": 65, "stock": 1001, "size": "", "labels": 0}, {"id": "item_89", "sl": 89, "name": "SOCKS", "sku": "SO70", "category": "SOCKS", "price": 70, "stock": 1002, "size": "", "labels": 0}, {"id": "item_90", "sl": 90, "name": "SOCKS", "sku": "SO75", "category": "SOCKS", "price": 75, "stock": 1003, "size": "", "labels": 0}, {"id": "item_91", "sl": 91, "name": "SOCKS", "sku": "SO80", "category": "SOCKS", "price": 80, "stock": 1004, "size": "", "labels": 0}, {"id": "item_92", "sl": 92, "name": "SOCKS", "sku": "SO85", "category": "SOCKS", "price": 85, "stock": 1005, "size": "", "labels": 0}, {"id": "item_93", "sl": 93, "name": "SOCKS", "sku": "SO90", "category": "SOCKS", "price": 90, "stock": 1006, "size": "", "labels": 0}, {"id": "item_94", "sl": 94, "name": "SOCKS", "sku": "SO95", "category": "SOCKS", "price": 95, "stock": 1007, "size": "", "labels": 0}, {"id": "item_95", "sl": 95, "name": "SOCKS", "sku": "SO100", "category": "SOCKS", "price": 100, "stock": 1008, "size": "", "labels": 0}, {"id": "item_96", "sl": 96, "name": "SOCKS", "sku": "SO105", "category": "SOCKS", "price": 105, "stock": 1009, "size": "", "labels": 0}, {"id": "item_97", "sl": 97, "name": "SOCKS", "sku": "SO110", "category": "SOCKS", "price": 110, "stock": 1010, "size": "", "labels": 0}, {"id": "item_98", "sl": 98, "name": "SOCKS", "sku": "SO115", "category": "SOCKS", "price": 115, "stock": 1011, "size": "", "labels": 0}, {"id": "item_99", "sl": 99, "name": "SOCKS", "sku": "SO120", "category": "SOCKS", "price": 120, "stock": 1012, "size": "", "labels": 0}, {"id": "item_100", "sl": 100, "name": "SOCKS", "sku": "SO125", "category": "SOCKS", "price": 125, "stock": 1013, "size": "", "labels": 0}, {"id": "item_101", "sl": 101, "name": "SOCKS", "sku": "SO130", "category": "SOCKS", "price": 130, "stock": 1014, "size": "", "labels": 0}, {"id": "item_102", "sl": 102, "name": "SOCKS", "sku": "SO135", "category": "SOCKS", "price": 135, "stock": 1015, "size": "", "labels": 0}, {"id": "item_103", "sl": 103, "name": "SOCKS", "sku": "SO140", "category": "SOCKS", "price": 140, "stock": 1016, "size": "", "labels": 0}, {"id": "item_104", "sl": 104, "name": "SOCKS", "sku": "SO145", "category": "SOCKS", "price": 145, "stock": 1017, "size": "", "labels": 0}, {"id": "item_105", "sl": 105, "name": "SOCKS", "sku": "SO150", "category": "SOCKS", "price": 150, "stock": 1018, "size": "", "labels": 0}, {"id": "item_106", "sl": 106, "name": "SOCKS", "sku": "SO155", "category": "SOCKS", "price": 155, "stock": 1019, "size": "", "labels": 0}, {"id": "item_107", "sl": 107, "name": "SOCKS", "sku": "SO160", "category": "SOCKS", "price": 160, "stock": 1020, "size": "", "labels": 0}, {"id": "item_108", "sl": 108, "name": "SOCKS", "sku": "SO165", "category": "SOCKS", "price": 165, "stock": 1021, "size": "", "labels": 0}, {"id": "item_109", "sl": 109, "name": "SOCKS", "sku": "SO170", "category": "SOCKS", "price": 170, "stock": 1022, "size": "", "labels": 0}, {"id": "item_110", "sl": 110, "name": "SOCKS", "sku": "SO175", "category": "SOCKS", "price": 175, "stock": 1023, "size": "", "labels": 0}, {"id": "item_111", "sl": 111, "name": "SOCKS", "sku": "SO180", "category": "SOCKS", "price": 180, "stock": 1024, "size": "", "labels": 0}, {"id": "item_112", "sl": 112, "name": "SOCKS", "sku": "SO185", "category": "SOCKS", "price": 185, "stock": 1025, "size": "", "labels": 0}, {"id": "item_113", "sl": 113, "name": "SOCKS", "sku": "SO190", "category": "SOCKS", "price": 190, "stock": 1026, "size": "", "labels": 0}, {"id": "item_114", "sl": 114, "name": "SOCKS", "sku": "SO195", "category": "SOCKS", "price": 195, "stock": 1027, "size": "", "labels": 0}, {"id": "item_115", "sl": 115, "name": "SOCKS", "sku": "SO200", "category": "SOCKS", "price": 200, "stock": 1028, "size": "", "labels": 0}, {"id": "item_116", "sl": 116, "name": "SOCKS", "sku": "SO205", "category": "SOCKS", "price": 205, "stock": 1029, "size": "", "labels": 0}, {"id": "item_117", "sl": 117, "name": "SOCKS", "sku": "SO210", "category": "SOCKS", "price": 210, "stock": 1030, "size": "", "labels": 0}, {"id": "item_118", "sl": 118, "name": "SOCKS", "sku": "SO215", "category": "SOCKS", "price": 215, "stock": 1031, "size": "", "labels": 0}, {"id": "item_119", "sl": 119, "name": "SOCKS", "sku": "SO220", "category": "SOCKS", "price": 220, "stock": 1032, "size": "", "labels": 0}, {"id": "item_120", "sl": 120, "name": "SOCKS", "sku": "SO225", "category": "SOCKS", "price": 225, "stock": 1033, "size": "", "labels": 0}, {"id": "item_121", "sl": 121, "name": "SOCKS", "sku": "SO230", "category": "SOCKS", "price": 230, "stock": 1034, "size": "", "labels": 0}, {"id": "item_122", "sl": 122, "name": "SOCKS", "sku": "SO235", "category": "SOCKS", "price": 235, "stock": 1035, "size": "", "labels": 0}, {"id": "item_123", "sl": 123, "name": "SOCKS", "sku": "SO240", "category": "SOCKS", "price": 240, "stock": 1036, "size": "", "labels": 0}, {"id": "item_124", "sl": 124, "name": "SOCKS", "sku": "SO245", "category": "SOCKS", "price": 245, "stock": 1037, "size": "", "labels": 0}, {"id": "item_125", "sl": 125, "name": "SOCKS", "sku": "SO250", "category": "SOCKS", "price": 250, "stock": 1038, "size": "", "labels": 0}, {"id": "item_126", "sl": 126, "name": "SHIRT", "sku": "SH499", "category": "SHIRT", "price": 499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_127", "sl": 127, "name": "SHIRT", "sku": "SH550", "category": "SHIRT", "price": 550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_128", "sl": 128, "name": "SHIRT", "sku": "SH599", "category": "SHIRT", "price": 599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_129", "sl": 129, "name": "SHIRT", "sku": "SH650", "category": "SHIRT", "price": 650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_130", "sl": 130, "name": "SHIRT", "sku": "SH699", "category": "SHIRT", "price": 699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_131", "sl": 131, "name": "SHIRT", "sku": "SH750", "category": "SHIRT", "price": 750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_132", "sl": 132, "name": "SHIRT", "sku": "SH799", "category": "SHIRT", "price": 799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_133", "sl": 133, "name": "SHIRT", "sku": "SH850", "category": "SHIRT", "price": 850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_134", "sl": 134, "name": "SHIRT", "sku": "SH899", "category": "SHIRT", "price": 899, "stock": 1000, "size": "", "labels": 0}, {"id": "item_135", "sl": 135, "name": "SHIRT", "sku": "SH950", "category": "SHIRT", "price": 950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_136", "sl": 136, "name": "SHIRT", "sku": "SH999", "category": "SHIRT", "price": 999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_137", "sl": 137, "name": "SHIRT", "sku": "SH1050", "category": "SHIRT", "price": 1050, "stock": 1000, "size": "", "labels": 0}, {"id": "item_138", "sl": 138, "name": "SHIRT", "sku": "SH1099", "category": "SHIRT", "price": 1099, "stock": 1000, "size": "", "labels": 0}, {"id": "item_139", "sl": 139, "name": "SHIRT", "sku": "SH1150", "category": "SHIRT", "price": 1150, "stock": 1000, "size": "", "labels": 0}, {"id": "item_140", "sl": 140, "name": "SHIRT", "sku": "SH1199", "category": "SHIRT", "price": 1199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_141", "sl": 141, "name": "SHIRT", "sku": "SH1250", "category": "SHIRT", "price": 1250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_142", "sl": 142, "name": "SHIRT", "sku": "SH1299", "category": "SHIRT", "price": 1299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_143", "sl": 143, "name": "SHIRT", "sku": "SH1350", "category": "SHIRT", "price": 1350, "stock": 1000, "size": "", "labels": 0}, {"id": "item_144", "sl": 144, "name": "SHIRT", "sku": "SH1399", "category": "SHIRT", "price": 1399, "stock": 1000, "size": "", "labels": 0}, {"id": "item_145", "sl": 145, "name": "SHIRT", "sku": "SH1450", "category": "SHIRT", "price": 1450, "stock": 1000, "size": "", "labels": 0}, {"id": "item_146", "sl": 146, "name": "SHIRT", "sku": "SH1499", "category": "SHIRT", "price": 1499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_147", "sl": 147, "name": "SHIRT", "sku": "SH1550", "category": "SHIRT", "price": 1550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_148", "sl": 148, "name": "SHIRT", "sku": "SH1599", "category": "SHIRT", "price": 1599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_149", "sl": 149, "name": "SHIRT", "sku": "SH1650", "category": "SHIRT", "price": 1650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_150", "sl": 150, "name": "PANT", "sku": "PA650", "category": "PANT", "price": 650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_151", "sl": 151, "name": "PANT", "sku": "PA699", "category": "PANT", "price": 699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_152", "sl": 152, "name": "PANT", "sku": "PA750", "category": "PANT", "price": 750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_153", "sl": 153, "name": "PANT", "sku": "PA799", "category": "PANT", "price": 799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_154", "sl": 154, "name": "PANT", "sku": "PA850", "category": "PANT", "price": 850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_155", "sl": 155, "name": "PANT", "sku": "PA899", "category": "PANT", "price": 899, "stock": 1000, "size": "", "labels": 0}, {"id": "item_156", "sl": 156, "name": "PANT", "sku": "PA950", "category": "PANT", "price": 950, "stock": 1000, "size": "", "labels": 0}, {"id": "item_157", "sl": 157, "name": "PANT", "sku": "PA999", "category": "PANT", "price": 999, "stock": 1000, "size": "", "labels": 0}, {"id": "item_158", "sl": 158, "name": "PANT", "sku": "PA1050", "category": "PANT", "price": 1050, "stock": 1000, "size": "", "labels": 0}, {"id": "item_159", "sl": 159, "name": "PANT", "sku": "PA1099", "category": "PANT", "price": 1099, "stock": 1000, "size": "", "labels": 0}, {"id": "item_160", "sl": 160, "name": "PANT", "sku": "PA1150", "category": "PANT", "price": 1150, "stock": 1000, "size": "", "labels": 0}, {"id": "item_161", "sl": 161, "name": "PANT", "sku": "PA1199", "category": "PANT", "price": 1199, "stock": 1000, "size": "", "labels": 0}, {"id": "item_162", "sl": 162, "name": "PANT", "sku": "PA1250", "category": "PANT", "price": 1250, "stock": 1000, "size": "", "labels": 0}, {"id": "item_163", "sl": 163, "name": "PANT", "sku": "PA1299", "category": "PANT", "price": 1299, "stock": 1000, "size": "", "labels": 0}, {"id": "item_164", "sl": 164, "name": "PANT", "sku": "PA1350", "category": "PANT", "price": 1350, "stock": 1000, "size": "", "labels": 0}, {"id": "item_165", "sl": 165, "name": "PANT", "sku": "PA1399", "category": "PANT", "price": 1399, "stock": 1000, "size": "", "labels": 0}, {"id": "item_166", "sl": 166, "name": "PANT", "sku": "PA1450", "category": "PANT", "price": 1450, "stock": 1000, "size": "", "labels": 0}, {"id": "item_167", "sl": 167, "name": "PANT", "sku": "PA1499", "category": "PANT", "price": 1499, "stock": 1000, "size": "", "labels": 0}, {"id": "item_168", "sl": 168, "name": "PANT", "sku": "PA1550", "category": "PANT", "price": 1550, "stock": 1000, "size": "", "labels": 0}, {"id": "item_169", "sl": 169, "name": "PANT", "sku": "PA1599", "category": "PANT", "price": 1599, "stock": 1000, "size": "", "labels": 0}, {"id": "item_170", "sl": 170, "name": "PANT", "sku": "PA1650", "category": "PANT", "price": 1650, "stock": 1000, "size": "", "labels": 0}, {"id": "item_171", "sl": 171, "name": "PANT", "sku": "PA1699", "category": "PANT", "price": 1699, "stock": 1000, "size": "", "labels": 0}, {"id": "item_172", "sl": 172, "name": "PANT", "sku": "PA1750", "category": "PANT", "price": 1750, "stock": 1000, "size": "", "labels": 0}, {"id": "item_173", "sl": 173, "name": "PANT", "sku": "PA1799", "category": "PANT", "price": 1799, "stock": 1000, "size": "", "labels": 0}, {"id": "item_174", "sl": 174, "name": "PANT", "sku": "PA1850", "category": "PANT", "price": 1850, "stock": 1000, "size": "", "labels": 0}, {"id": "item_175", "sl": 175, "name": "PANT", "sku": "PA1899", "category": "PANT", "price": 1899, "stock": 1000, "size": "", "labels": 0}];
+const STORAGE_KEY = 'choppersMensWearStock_v2';
+
+// Pure-JS Code 128-B SVG generator so barcodes ALWAYS render even offline or inside downloaded files
+const CODE128B_PATTERNS = [
+  "212222","222122","222221","121223","121322","131222","122213","122312","132212","221213",
+  "221312","231212","112232","122132","122231","113222","123122","123221","223211","221132",
+  "221231","213212","223112","312131","311222","321122","321221","312212","322112","322211",
+  "212123","212321","232121","111323","131123","131321","112313","132113","132311","211313",
+  "231113","231311","112133","112331","132131","113123","113321","133121","313121","211331",
+  "231131","213113","213311","213131","311123","311321","331121","312113","312311","332111",
+  "314111","221411","431111","111224","111422","121124","121421","141122","141221","112214",
+  "112412","122114","122411","142112","142211","241211","221114","413111","241112","134111",
+  "111242","121142","121241","114212","124112","124211","411212","421112","421211","212141",
+  "214121","412121","111143","111341","131141","114113","114311","411113","411311","113141",
+  "114131","311141","411131","211412","211214","211232","2331112"
+];
+
+function buildCode128SvgMarkup(text, heightPx = 46) {
+  const value = String(text || 'SH699').trim() || 'SH699';
+  let codes = [104]; // Start Code B
+  let checksum = 104;
+  for (let i = 0; i < value.length; i++) {
+    let code = value.charCodeAt(i) - 32;
+    if (code < 0 || code > 94) code = 0;
+    codes.push(code);
+    checksum += code * (i + 1);
+  }
+  codes.push(checksum % 103);
+  codes.push(106); // Stop pattern
+
+  let bars = [];
+  let x = 0;
+  for (const c of codes) {
+    const pat = CODE128B_PATTERNS[c];
+    for (let i = 0; i < pat.length; i++) {
+      const w = Number(pat[i]);
+      if (i % 2 === 0) {
+        bars.push(`<rect x="${x}" y="0" width="${w}" height="${heightPx}" fill="#000000"/>`);
+      }
+      x += w;
+    }
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${x} ${heightPx}" preserveAspectRatio="none">${bars.join('')}</svg>`;
+}
+
+function renderBarcodeIntoSvg(svgEl, codeText) {
+  const cleanCode = String(codeText || 'SH699').trim();
+  if (window.JsBarcode) {
+    try {
+      JsBarcode(svgEl, cleanCode, {
+        format: 'CODE128',
+        lineColor: '#000000',
+        background: '#ffffff',
+        width: 1.7,
+        height: 44,
+        displayValue: false,
+        margin: 0
+      });
+      return;
+    } catch (e) {
+      // Fallback to built-in SVG generator
+    }
+  }
+  const temp = document.createElement('div');
+  temp.innerHTML = buildCode128SvgMarkup(cleanCode, 44);
+  const generated = temp.firstElementChild;
+  svgEl.setAttribute('viewBox', generated.getAttribute('viewBox'));
+  svgEl.setAttribute('preserveAspectRatio', 'none');
+  svgEl.innerHTML = generated.innerHTML;
+}
+
+const $ = id => document.getElementById(id);
+
+function loadProducts() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map(p => ({
+          ...p,
+          labels: Number(p.labels) > 0 ? Number(p.labels) : 0,
+          size: p.size || ''
+        }));
+      }
+    }
+  } catch (e) {}
+  return DEFAULT_PRODUCTS.map(p => ({ ...p }));
+}
+
+function saveProducts() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  } catch (e) {}
+}
+
+let items = loadProducts();
+let activeCategory = 'ALL';
+let manualPreviewId = null;
+
+// Default initial preview item to SH699 (or first item) matching the reference screenshot
+const defaultShirt = items.find(x => x.sku === 'SH699') || items[0];
+if (defaultShirt) {
+  manualPreviewId = defaultShirt.id;
+}
+
+function formatINR(num) {
+  const n = Number(num || 0);
+  return '₹' + n.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+}
+
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+}
+
+function showToast(msg) {
+  const el = $('toastMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => {
+    el.style.display = 'none';
+  }, 2400);
+}
+
+function getPreviewItem() {
+  const firstWithQty = items.find(x => Number(x.labels) > 0);
+  if (firstWithQty) return { item: firstWithQty, mode: 'qty' };
+  if (manualPreviewId) {
+    const found = items.find(x => x.id === manualPreviewId);
+    if (found) return { item: found, mode: 'selected' };
+  }
+  const filtered = getFilteredItems();
+  if (filtered.length > 0) return { item: filtered[0], mode: 'default' };
+  return { item: items[0] || { name: 'SHIRT', sku: 'SH699', price: 699, size: '' }, mode: 'default' };
+}
+
+function updateLabelPreview() {
+  const { item, mode } = getPreviewItem();
+  const showSize = $('showSize').value === 'yes';
+  const sizeVal = $('labelSize').value;
+
+  const box = $('labelPreviewBox');
+  if (sizeVal === '50x30') {
+    box.style.width = '266px';
+    box.style.minHeight = '158px';
+  } else if (sizeVal === '40x30') {
+    box.style.width = '230px';
+    box.style.minHeight = '165px';
+  } else if (sizeVal === '38x25') {
+    box.style.width = '222px';
+    box.style.minHeight = '138px';
+  } else {
+    box.style.width = '266px';
+    box.style.minHeight = '133px';
+  }
+
+  $('prevProduct').textContent = (item.name || 'SHIRT').toUpperCase();
+  $('prevSize').textContent = (showSize && item.size) ? `SIZE: ${item.size}` : '';
+  $('prevCode').textContent = item.sku || 'SH699';
+  $('prevPrice').textContent = formatINR(item.price);
+
+  renderBarcodeIntoSvg($('previewBarcode'), item.sku || 'SH699');
+
+  const totalQueued = items.reduce((acc, x) => acc + (Number(x.labels) > 0 ? Number(x.labels) : 0), 0);
+  const queuedSkus = items.filter(x => Number(x.labels) > 0).length;
+  const pill = $('queueSummaryPill');
+
+  if (totalQueued > 0) {
+    pill.textContent = `${totalQueued} label${totalQueued === 1 ? '' : 's'} (${queuedSkus} SKU${queuedSkus === 1 ? '' : 's'})`;
+    pill.classList.add('active');
+    $('previewActiveHint').textContent = `Showing: ${item.name} (${item.sku}) × ${item.labels}`;
+  } else {
+    pill.textContent = `${items.length} SKUs Ready`;
+    pill.classList.remove('active');
+    $('previewActiveHint').textContent = `Showing sample: ${item.name} (${item.sku})`;
+  }
+  $('totalLabelsFooter').textContent = `${totalQueued} label${totalQueued === 1 ? '' : 's'} queued for printing`;
+}
+
+function getFilteredItems() {
+  const q = $('filterInput').value.trim().toLowerCase();
+  return items.filter(item => {
+    if (activeCategory === 'QUEUED') {
+      if (!(Number(item.labels) > 0)) return false;
+    } else if (activeCategory !== 'ALL') {
+      if ((item.category || '').toUpperCase() !== activeCategory) return false;
+    }
+    if (!q) return true;
+    const hay = `${item.name} ${item.sku} ${item.category} ${item.price} ₹${item.price}`.toLowerCase();
+    return hay.includes(q);
+  });
+}
+
+function renderCategoryPills() {
+  const counts = { ALL: items.length, QUEUED: items.filter(x => Number(x.labels) > 0).length };
+  const order = ['ALL', 'SHIRT', 'PANT', 'JEANS', 'TSHIRT', 'SHORTS', 'SOCKS', 'UG'];
+  for (const it of items) {
+    const c = (it.category || 'OTHER').toUpperCase();
+    counts[c] = (counts[c] || 0) + 1;
+  }
+
+  const pillsHtml = order.filter(c => counts[c]).map(c => {
+    const label = c === 'ALL' ? `All (${counts[c]})` : `${c} (${counts[c]})`;
+    return `<button type="button" class="cat-pill ${activeCategory === c ? 'active' : ''}" data-cat="${c}">${esc(label)}</button>`;
+  });
+
+  if (counts.QUEUED > 0 || activeCategory === 'QUEUED') {
+    pillsHtml.push(`<button type="button" class="cat-pill ${activeCategory === 'QUEUED' ? 'active' : ''}" data-cat="QUEUED">Selected (${counts.QUEUED})</button>`);
+  }
+
+  $('categoryPills').innerHTML = pillsHtml.join('');
+}
+
+function renderTable() {
+  const showSize = $('showSize').value === 'yes';
+  $('sizeHeaderCol').style.display = showSize ? '' : 'none';
+
+  const filtered = getFilteredItems();
+  const tbody = $('itemsTableBody');
+  const { item: activePrev } = getPreviewItem();
+
+  $('clearFilterBtn').classList.toggle('visible', $('filterInput').value.trim().length > 0);
+  $('emptyState').style.display = filtered.length === 0 ? 'block' : 'none';
+  $('showingSummary').textContent = `Showing ${filtered.length} of ${items.length} items from stock sheet`;
+
+  tbody.innerHTML = filtered.map(item => {
+    const qtyVal = Number(item.labels) > 0 ? Number(item.labels) : '';
+    const isPrev = activePrev && activePrev.id === item.id;
+    const hasQty = Number(item.labels) > 0;
+    const sizeCell = showSize ? `
+      <td>
+        <select class="size-select-inline" data-size-id="${item.id}" aria-label="Size for ${esc(item.name)} ${esc(item.sku)}">
+          <option value="" ${!item.size ? 'selected' : ''}>—</option>
+          <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
+          <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
+          <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
+          <option value="XL" ${item.size === 'XL' ? 'selected' : ''}>XL</option>
+          <option value="XXL" ${item.size === 'XXL' ? 'selected' : ''}>XXL</option>
+          <option value="3XL" ${item.size === '3XL' ? 'selected' : ''}>3XL</option>
+          <option value="FREE" ${item.size === 'FREE' ? 'selected' : ''}>FREE</option>
+        </select>
+      </td>` : '';
+
+    return `
+      <tr class="item-row ${isPrev ? 'previewing' : ''} ${hasQty ? 'has-qty' : ''}" data-row-id="${item.id}">
+        <td>
+          <div class="item-name">${esc(item.name)}</div>
+          <div class="item-code">${esc(item.sku)}</div>
+        </td>
+        <td class="item-price">${formatINR(item.price)}</td>
+        ${sizeCell}
+        <td>
+          <input
+            type="number"
+            min="0"
+            max="500"
+            class="labels-input"
+            data-qty-id="${item.id}"
+            value="${qtyVal}"
+            placeholder=""
+            aria-label="Labels quantity for ${esc(item.name)} ${esc(item.sku)}"
+          >
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  renderCategoryPills();
+  updateLabelPreview();
+}
+
+function getBatchForPrinting() {
+  const queued = items.filter(x => Number(x.labels) > 0);
+  if (queued.length > 0) {
+    return queued;
+  }
+  // If user hasn't typed a quantity yet, print 1 copy of the currently previewed item
+  const { item } = getPreviewItem();
+  return [{ ...item, labels: 1 }];
+}
+
+function getLabelDimensions() {
+  const val = $('labelSize').value;
+  if (val === '50x30') return { w: 50, h: 30, mode: 'roll' };
+  if (val === '40x30') return { w: 40, h: 30, mode: 'roll' };
+  if (val === '38x25') return { w: 38, h: 25, mode: 'roll' };
+  if (val === 'a4') return { w: 50, h: 25, mode: 'a4' };
+  return { w: 50, h: 25, mode: 'roll' };
+}
+
+function generatePrintableDocumentHtml(batch, autoPrint = false) {
+  const dim = getLabelDimensions();
+  const showSize = $('showSize').value === 'yes';
+  let labelsMarkup = '';
+
+  for (const item of batch) {
+    const count = Math.max(1, Math.min(500, Number(item.labels) || 1));
+    const svgBarcode = buildCode128SvgMarkup(item.sku, 44);
+    const sizeText = (showSize && item.size) ? `<span class="pl-size">SIZE: ${esc(item.size)}</span>` : `<span class="pl-size"></span>`;
+    for (let i = 0; i < count; i++) {
+      labelsMarkup += `
+        <div class="print-label">
+          <div class="pl-shop">CHOPPERS MENS WEAR</div>
+          <div class="pl-prod-row">
+            <span class="pl-prod">${esc(item.name)}</span>
+            ${sizeText}
+          </div>
+          <div class="pl-barcode">${svgBarcode}</div>
+          <div class="pl-bottom">
+            <span class="pl-code">${esc(item.sku)}</span>
+            <span class="pl-price">${formatINR(item.price)}</span>
+          </div>
+        </div>`;
+    }
+  }
+
+  const pageCss = dim.mode === 'a4'
+    ? `@page { size: A4; margin: 8mm; }
+       body { display: flex; flex-wrap: wrap; gap: 2mm; justify-content: flex-start; align-content: flex-start; }
+       .print-label { border: 0.2mm dashed #ccc; page-break-after: auto; break-after: auto; page-break-inside: avoid; }`
+    : `@page { size: ${dim.w}mm ${dim.h}mm; margin: 0; }
+       .print-label { page-break-after: always; break-after: page; }
+       .print-label:last-child { page-break-after: auto; break-after: auto; }`;
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CHOPPERS MENS WEAR — Printable Barcode Labels</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; background: #fff; color: #000; font-family: 'Inter', Arial, sans-serif; }
+.screen-bar { padding: 12px 18px; background: #111; color: #fff; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.screen-bar button { background: #fff; color: #111; border: none; padding: 7px 16px; font-weight: 700; cursor: pointer; border-radius: 2px; }
+.print-label {
+  width: ${dim.w}mm;
+  height: ${dim.h}mm;
+  padding: 1.6mm 2.4mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  color: #000;
+  overflow: hidden;
+  border-bottom: 1px dashed #ddd;
+}
+.pl-shop {
+  font-size: 5.8pt;
+  font-weight: 800;
+  letter-spacing: 0.9pt;
+  text-transform: uppercase;
+  border-bottom: 0.35mm solid #000;
+  padding-bottom: 0.5mm;
+  line-height: 1.05;
+}
+.pl-prod-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 0.4mm;
+}
+.pl-prod { font-size: 7.8pt; font-weight: 800; text-transform: uppercase; line-height: 1.1; }
+.pl-size { font-size: 6.5pt; font-weight: 700; text-transform: uppercase; }
+.pl-barcode { width: 100%; display: flex; justify-content: center; align-items: center; margin: 0.3mm 0; }
+.pl-barcode svg { width: 92%; height: ${dim.h >= 30 ? '11.5mm' : '9.2mm'}; display: block; }
+.pl-bottom { display: flex; justify-content: space-between; align-items: baseline; width: 100%; }
+.pl-code { font-family: ui-monospace, Consolas, monospace; font-size: 7pt; font-weight: 600; letter-spacing: 0.3pt; }
+.pl-price { font-size: 9.5pt; font-weight: 800; line-height: 1; }
+${pageCss}
+@media print {
+  .screen-bar { display: none !important; }
+  .print-label { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+<div class="screen-bar">
+  <span>CHOPPERS MENS WEAR — Print Preview (${dim.w} × ${dim.h} mm)</span>
+  <button onclick="window.print()">PRINT LABELS</button>
+</div>
+${labelsMarkup}
+${autoPrint ? '<script>window.onload=()=>setTimeout(()=>window.print(),250);<\/script>' : ''}
+</body>
+</html>`;
+}
+
+// Event Listeners
+$('itemsTableBody').addEventListener('input', e => {
+  const input = e.target.closest('[data-qty-id]');
+  if (!input) return;
+  const id = input.dataset.qtyId;
+  const val = Math.max(0, Math.min(500, parseInt(input.value, 10) || 0));
+  const item = items.find(x => x.id === id);
+  if (item) {
+    item.labels = val;
+    manualPreviewId = item.id;
+    saveProducts();
+    const tr = input.closest('tr');
+    if (tr) tr.classList.toggle('has-qty', val > 0);
+    renderCategoryPills();
+    updateLabelPreview();
+  }
+});
+
+$('itemsTableBody').addEventListener('change', e => {
+  const sizeSel = e.target.closest('[data-size-id]');
+  if (!sizeSel) return;
+  const id = sizeSel.dataset.sizeId;
+  const item = items.find(x => x.id === id);
+  if (item) {
+    item.size = sizeSel.value;
+    manualPreviewId = item.id;
+    saveProducts();
+    updateLabelPreview();
+  }
+});
+
+$('itemsTableBody').addEventListener('click', e => {
+  if (e.target.closest('input, select')) return;
+  const tr = e.target.closest('[data-row-id]');
+  if (!tr) return;
+  manualPreviewId = tr.dataset.rowId;
+  document.querySelectorAll('.item-row').forEach(r => r.classList.toggle('previewing', r.dataset.rowId === manualPreviewId));
+  updateLabelPreview();
+});
+
+$('filterInput').addEventListener('input', () => {
+  renderTable();
+});
+
+$('clearFilterBtn').addEventListener('click', () => {
+  $('filterInput').value = '';
+  renderTable();
+  $('filterInput').focus();
+});
+
+$('categoryPills').addEventListener('click', e => {
+  const btn = e.target.closest('[data-cat]');
+  if (!btn) return;
+  activeCategory = btn.dataset.cat;
+  renderTable();
+});
+
+$('labelSize').addEventListener('change', updateLabelPreview);
+$('showSize').addEventListener('change', renderTable);
+
+$('downloadPrintableBtn').addEventListener('click', () => {
+  const batch = getBatchForPrinting();
+  const totalCount = batch.reduce((s, x) => s + (Number(x.labels) || 1), 0);
+  const htmlDoc = generatePrintableDocumentHtml(batch, true);
+  const blob = new Blob([htmlDoc], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `choppers-barcode-labels-${totalCount}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  showToast(`Downloaded printable file (${totalCount} label${totalCount === 1 ? '' : 's'})`);
+});
+
+$('printHereBtn').addEventListener('click', () => {
+  const batch = getBatchForPrinting();
+  const dim = getLabelDimensions();
+  const showSize = $('showSize').value === 'yes';
+  const printArea = $('printArea');
+
+  let dynStyle = document.getElementById('dynamicPrintPageStyle');
+  if (!dynStyle) {
+    dynStyle = document.createElement('style');
+    dynStyle.id = 'dynamicPrintPageStyle';
+    document.head.appendChild(dynStyle);
+  }
+  dynStyle.textContent = `@media print { @page { size: ${dim.w}mm ${dim.h}mm; margin: 0; } .print-label { width: ${dim.w}mm; height: ${dim.h}mm; } }`;
+
+  let html = '';
+  for (const item of batch) {
+    const count = Math.max(1, Math.min(500, Number(item.labels) || 1));
+    const svgMarkup = buildCode128SvgMarkup(item.sku, 44);
+    const sizeText = (showSize && item.size) ? `<span class="pl-size">SIZE: ${esc(item.size)}</span>` : `<span class="pl-size"></span>`;
+    for (let i = 0; i < count; i++) {
+      html += `
+        <div class="print-label">
+          <div class="pl-shop">CHOPPERS MENS WEAR</div>
+          <div class="pl-prod-row">
+            <span class="pl-prod">${esc(item.name)}</span>
+            ${sizeText}
+          </div>
+          <div class="pl-barcode">${svgMarkup}</div>
+          <div class="pl-bottom">
+            <span class="pl-code">${esc(item.sku)}</span>
+            <span class="pl-price">${formatINR(item.price)}</span>
+          </div>
+        </div>`;
+    }
+  }
+  printArea.innerHTML = html;
+  window.print();
+});
+
+$('clearBtn').addEventListener('click', () => {
+  items.forEach(x => { x.labels = 0; });
+  if (activeCategory === 'QUEUED') activeCategory = 'ALL';
+  saveProducts();
+  renderTable();
+  showToast('Cleared all label quantities');
+});
+
+$('toggleAddDrawerBtn').addEventListener('click', () => {
+  $('addSkuDrawer').classList.toggle('open');
+});
+
+$('addSkuForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('newProdName').value.trim().toUpperCase();
+  const sku = $('newProdCode').value.trim().toUpperCase();
+  const price = Number($('newProdPrice').value) || 0;
+  const qty = Math.max(0, Math.min(500, Number($('newProdQty').value) || 0));
+  if (!name || !sku) return;
+
+  const existing = items.find(x => x.sku.toUpperCase() === sku);
+  if (existing) {
+    existing.name = name;
+    existing.price = price;
+    existing.labels = qty;
+    manualPreviewId = existing.id;
+    showToast(`Updated existing SKU ${sku}`);
+  } else {
+    const newItem = {
+      id: 'item_' + Date.now(),
+      sl: items.length + 1,
+      name,
+      sku,
+      category: name,
+      price,
+      stock: 1000,
+      size: '',
+      labels: qty
+    };
+    items.unshift(newItem);
+    manualPreviewId = newItem.id;
+    showToast(`Added ${name} (${sku})`);
+  }
+  saveProducts();
+  $('addSkuForm').reset();
+  $('newProdQty').value = 1;
+  renderTable();
+});
+
+$('resetStockBtn').addEventListener('click', () => {
+  items = DEFAULT_PRODUCTS.map(p => ({ ...p }));
+  activeCategory = 'ALL';
+  $('filterInput').value = '';
+  saveProducts();
+  renderTable();
+  showToast('Restored all 175 products from stock sheet');
+});
+
+$('exportCsvBtn').addEventListener('click', () => {
+  const headers = ['SL.', 'Product', 'Code', 'Category', 'Sale', 'Labels'];
+  const rows = items.map((x, idx) => [
+    idx + 1,
+    `"${String(x.name).replace(/"/g, '""')}"`,
+    `"${String(x.sku).replace(/"/g, '""')}"`,
+    `"${String(x.category || x.name).replace(/"/g, '""')}"`,
+    x.price,
+    x.labels || 0
+  ].join(','));
+  const csv = '\ufeff' + [headers.join(','), ...rows].join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'choppers-mens-wear-stock.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  showToast('Exported stock catalogue CSV');
+});
+
+$('importCsvBtn').addEventListener('click', () => {
+  $('importCsvInput').click();
+});
+
+$('importCsvInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = (await file.text()).replace(/^\ufeff/, '');
+    const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+    if (lines.length < 2) throw new Error('Empty CSV');
+    const parseLine = line => {
+      const res = [];
+      let cur = '', inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"' && line[i+1] === '"' && inQ) { cur += '"'; i++; }
+        else if (c === '"') inQ = !inQ;
+        else if (c === ',' && !inQ) { res.push(cur.trim()); cur = ''; }
+        else cur += c;
+      }
+      res.push(cur.trim());
+      return res;
+    };
+    const headers = parseLine(lines[0]).map(h => h.toLowerCase());
+    const idxProd = headers.findIndex(h => h.includes('product') || h === 'name' || h === 'item');
+    const idxCode = headers.findIndex(h => h.includes('code') || h.includes('sku') || h.includes('barcode'));
+    const idxSale = headers.findIndex(h => h.includes('sale') || h.includes('price'));
+    const idxCat = headers.findIndex(h => h.includes('cat'));
+    const idxLbl = headers.findIndex(h => h.includes('label'));
+
+    let count = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const cols = parseLine(lines[i]);
+      const name = (cols[idxProd >= 0 ? idxProd : 1] || '').toUpperCase();
+      const sku = (cols[idxCode >= 0 ? idxCode : 2] || '').toUpperCase();
+      if (!name || !sku) continue;
+      const rawPrice = cols[idxSale >= 0 ? idxSale : 6] || cols[idxSale >= 0 ? idxSale : 2] || '0';
+      const price = parseInt(String(rawPrice).replace(/[^\d]/g, ''), 10) || 0;
+      const category = (cols[idxCat >= 0 ? idxCat : 3] || name).toUpperCase();
+      const labels = idxLbl >= 0 ? (parseInt(cols[idxLbl], 10) || 0) : 0;
+
+      const existing = items.find(x => x.sku === sku);
+      if (existing) {
+        existing.name = name;
+        existing.price = price;
+        existing.category = category;
+        if (labels > 0) existing.labels = labels;
+      } else {
+        items.push({
+          id: 'item_' + Date.now() + '_' + count,
+          sl: items.length + 1,
+          name,
+          sku,
+          category,
+          price,
+          stock: 1000,
+          size: '',
+          labels
+        });
+      }
+      count++;
+    }
+    saveProducts();
+    renderTable();
+    showToast(`Imported ${count} product(s)`);
+  } catch (err) {
+    showToast('Could not parse CSV file');
+  }
+  e.target.value = '';
+});
+
+window.addEventListener('afterprint', () => {
+  $('printArea').innerHTML = '';
+});
+
+renderTable();
+</script>
+</body>
+</html>
